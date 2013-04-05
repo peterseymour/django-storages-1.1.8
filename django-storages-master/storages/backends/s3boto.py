@@ -3,15 +3,15 @@ import mimetypes
 from gzip import GzipFile
 import datetime
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO  # noqa
+from io import BytesIO as StringIO
 
 from django.core.files.base import File
 from django.core.files.storage import Storage
 from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
-from django.utils.encoding import force_unicode, smart_str
+from django.utils.encoding import smart_str
+
+def force_unicode( s ):
+    return s
 
 try:
     from boto import __version__ as boto_version
@@ -19,7 +19,8 @@ try:
     from boto.exception import S3ResponseError
     from boto.s3.key import Key as S3Key
     from boto.utils import parse_ts
-except ImportError:
+except ImportError as e:
+    print( e )
     raise ImproperlyConfigured("Could not load Boto's S3 bindings.\n"
                                "See https://github.com/boto/boto")
 
@@ -55,7 +56,7 @@ def safe_join(base, *paths):
     Paths outside the base path indicate a possible security
     sensitive operation.
     """
-    from urlparse import urljoin
+    from urllib.parse import urljoin
     base_path = force_unicode(base)
     base_path = base_path.rstrip('/')
     paths = [force_unicode(p) for p in paths]

@@ -45,7 +45,7 @@ class LibCloudStorage(Storage):
                 self.provider['user'],
                 self.provider['key'],
                 )
-        except Exception, e:
+        except Exception as e:
             raise ImproperlyConfigured(
                 "Unable to create libcloud driver type %s: %s" % \
                 (self.provider.get('type'), e))
