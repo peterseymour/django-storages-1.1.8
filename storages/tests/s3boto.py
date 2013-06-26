@@ -1,7 +1,7 @@
 import os
 import mock
 from uuid import uuid4
-from urllib2 import urlopen
+from urllib.request import urlopen
 import datetime
 
 from django.test import TestCase
